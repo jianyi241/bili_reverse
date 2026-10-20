@@ -58,6 +58,8 @@
 
 ### Phase 5 — 听影 UI（用户 Figma 稿）接入真实接口（进行中）
 - [x] 原稿样式零改动，只改数据层（`ui/src/api.ts` + `ui/src/App.tsx`）
+- [x] 首页分页（`pn` 递增 + 加载更多）与「换一批」（推荐流 `rcmd`）
+- [x] 仓库初始化（git + .gitignore + 首次提交）
 - [x] 首页 / 播放页 / 识别歌曲 / 人声分离 / 评论 / 我的 / 扫码登录 全部接真实接口
 - [x] 删除「投稿」入口
 - [ ] 音视频识别（ASR）后端
@@ -73,6 +75,14 @@ login-demo/web  旧 Vue 前端（保留，作为功能参照）
 login-demo/app  暗色 React 前端（/app，早期试验版，保留）
 login-demo/ui   听影 UI（/ui，用户提供稿，当前主用）
 ```
+
+## 数据源说明（为什么刷新内容一样）
+
+| 源 | 行为 | 用法 |
+|---|---|---|
+| `/x/web-interface/popular?pn=N` | **固定一期榜单**，短时间内同一 `pn` 内容不变；不同 `pn` 完全不同 | 首页默认列表 + 分页 |
+| `/x/web-interface/wbi/index/top/feed/rcmd` | 推荐流，每次 `fresh_idx/brush` 变化都给新内容 | 首页「换一批」 |
+| `/x/v2/ranking/v2` | 排行榜（按分区），也是周期性更新 | 备用 |
 
 ## 验收标准（每期）
 

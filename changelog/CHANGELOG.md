@@ -2,6 +2,30 @@
 
 本项目所有值得记录的变更都写在这里。格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)。
 
+## [2.1.1] — 2026-10-20
+
+### Added — 首页分页与「换一批」
+- 首页底部「加载更多」：`/api/popular?pn=N` 逐页追加（pn1/pn2/pn3 实测零重叠）
+- 右上「换一批」：接入推荐流 `GET /api/feed/recommend?refresh=N`
+  （`/x/web-interface/wbi/index/top/feed/rcmd`，WBI 签名，`refresh` 递增即换一批）
+- 分页状态显示：`热门 第 N 页 · 40 条` / `推荐流 #2 · 20 条`
+- 底部提示文案说明「热门榜是固定一期，短时间刷新不变」
+
+### Fixed — 首页刷新内容不变
+- 原因：`/x/web-interface/popular` 是 bilibili 的**固定一期热门榜快照**（同页连续两次返回同一批 bvid，实测完全相等），
+  前端又写死 `pn=1`，所以每次刷新都是同一批。
+- 现在：分页拿更多页 + 「换一批」走推荐流，每次内容不同（实测 refresh=0/1/2 三批互不重复）。
+
+### Changed — 后端
+- `/api/popular` 透传 `noMore`（bilibili 的 `data.no_more`），前端据此停止加载
+- 新增 `/api/feed/recommend`（推荐流，返回与 popular 同构的卡片字段）
+
+### Added — 仓库
+- `git init`（main 分支）+ `.gitignore`
+- 首次提交 167 个文件 / 12.15 MB
+- 排除：`node_modules`、`dist`、`login-demo/cache`、`session.json`、`profile-cdp*`、
+  `sms-capture.log`（含手机号/验证码）、`*.seg*.bin`、`net-io.json`、`login-demo/bin`（ffmpeg 70MB）
+
 ## [2.1.0] — 2026-10-20
 
 ### Added — 听影 UI（用户提供的 Figma Make 稿）接入真实接口
