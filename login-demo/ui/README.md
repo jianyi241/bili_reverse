@@ -1,3 +1,5 @@
+> **⚠️ 仅供学习参考，禁止商用。** 完整免责声明见 [`../../README.md`](../../README.md#免责声明)。
+
 # 听影 UI（用户提供的 Figma Make 稿，已接真实接口）
 
 原稿：React 19 + Vite 8 + Tailwind v4。**样式一行没改**，只把假数据换成 `login-demo/server.js` 的真实接口。
