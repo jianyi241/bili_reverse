@@ -1,0 +1,75 @@
+@import './styles/coze-tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #app {
+    height: 100%;
+  }
+  body {
+    font-family: var(--coze-font);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: rgb(var(--coze-brand-5) / 0.22);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--coze-stroke-opaque));
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex h-9 items-center justify-center gap-2 rounded-normal px-4 text-lg font-medium
+           transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-brand-5 text-white hover:bg-brand-6 active:bg-brand-7;
+  }
+  .btn-secondary {
+    @apply btn border border-stroke bg-bg-3 text-fg-2 hover:bg-bg-1;
+  }
+  .btn-ghost {
+    @apply inline-flex h-8 items-center gap-1.5 rounded-small px-2.5 text-lg text-fg-2
+           transition-colors hover:bg-bg-1 hover:text-fg-3;
+  }
+  .field {
+    @apply h-9 w-full rounded-normal border border-stroke bg-bg-3 px-3 text-lg text-fg-4
+           outline-none transition-shadow placeholder:text-fg-1
+           focus:border-brand-5 focus:ring-2 focus:ring-brand-5/15;
+  }
+  .card {
+    @apply rounded-md border border-stroke bg-bg-3 shadow-sm;
+  }
+  .chip {
+    @apply inline-flex h-7 items-center rounded-small border border-stroke bg-bg-1 px-2.5 text-base
+           text-fg-2 transition-colors hover:text-fg-3;
+  }
+  .chip-on {
+    @apply border-brand-5/30 bg-brand-5/10 font-medium text-brand-5;
+  }
+  /* 卡片里的小操作按钮（听音频 / 评论 / 识别 …） */
+  .btn-soft {
+    @apply inline-flex h-7 items-center gap-1 rounded-small border border-stroke bg-bg-1 px-2
+           text-base text-fg-2 transition-colors hover:bg-bg-3 hover:text-fg-3
+           disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-soft-on {
+    @apply border-brand-5/30 bg-brand-5/10 font-medium text-brand-5 hover:bg-brand-5/15;
+  }
+}

@@ -1,0 +1,44 @@
+# 依赖
+node_modules/
+**/node_modules/
+
+# 构建产物（由 npm run build 生成）
+dist/
+**/dist/
+
+# 运行期缓存与登录态
+login-demo/cache/
+login-demo/session.json
+login-demo/session.json.bak
+login-demo/*.log
+*.part
+
+# Chrome 调试用的独立 profile（可能含真实 Cookie，绝不入库）
+profile-cdp/
+profile-cdp2/
+ud/
+
+# 二进制工具（ffmpeg 约 70MB，按 README 自行下载）
+login-demo/bin/
+
+# 逆向产物（体积大，取证价值在本机）
+geetest/*.js
+geetest/*.json
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# 环境变量
+.env
+.env.*
+
+# 逆向过程产物（含手机号/验证码等敏感抓包，绝不入库）
+sms-capture.log
+*.seg*.bin
+net-io.json
+plaintext-capture.json
+*.pcap

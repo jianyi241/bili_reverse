@@ -1,0 +1,209 @@
+{
+  "bvid": "BV1anZJBXE3U",
+  "title": "那些神级影视Bgm.",
+  "duration": 244,
+  "analyzedSeconds": 244,
+  "mode": "tracklist",
+  "audio": {
+    "id": 30280,
+    "kbps": 187,
+    "bytes": 0
+  },
+  "separator": null,
+  "recognizer": {
+    "provider": "shazam",
+    "mode": "cloud",
+    "input": "original-mix",
+    "windows": 23,
+    "matchedWindows": 23
+  },
+  "tracks": [
+    {
+      "match": {
+        "title": "Running Up That Hill",
+        "artist": "MEG MYERS",
+        "url": "https://www.shazam.com/track/458939173/running-up-that-hill",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/09/73/0e/09730efd-e261-7352-69f2-248ee37b35d3/814908027461.jpg/400x400cc.jpg",
+        "genre": "Alternative",
+        "album": "Running Up That Hill - Single",
+        "released": "2019",
+        "label": "300 Entertainment",
+        "lyrics_snippet": null
+      },
+      "from": 3,
+      "to": 33,
+      "hits": 3,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Una Mattina",
+        "artist": "Ludovico Einaudi",
+        "url": "https://www.shazam.com/track/40441209/una-mattina",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/ea/44/86/ea448600-257f-670f-7f06-332e02b42abc/06UMGIM59381.rgb.jpg/400x400cc.jpg",
+        "genre": "Classical",
+        "album": "Una Mattina",
+        "released": "2004",
+        "label": "Decca (UMO)",
+        "lyrics_snippet": null
+      },
+      "from": 33,
+      "to": 53,
+      "hits": 2,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Kids",
+        "artist": "Kyle Dixon & Michael Stein",
+        "url": "https://www.shazam.com/track/326984332/kids",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/25/ca/5d/25ca5d71-5cd3-b249-8ddf-e8e3b8b761a3/stranger-things-volume-one_3000.jpg/400x400cc.jpg",
+        "genre": "Soundtrack",
+        "album": "Stranger Things, Vol. 1 (A Netflix Original Series Soundtrack)",
+        "released": "2016",
+        "label": "Lakeshore Records",
+        "lyrics_snippet": null
+      },
+      "from": 53,
+      "to": 83,
+      "hits": 3,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Pacific Rim (feat. Tom Morello)",
+        "artist": "Ramin Djawadi",
+        "url": "https://www.shazam.com/track/91037047/pacific-rim-feat-tom-morello",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/9d/aa/88/9daa88fc-8ddb-ff5f-cfae-8c905b43fb07/794043171857.jpg/400x400cc.jpg",
+        "genre": "Soundtrack",
+        "album": "Pacific Rim (Original Motion Picture Soundtrack)",
+        "released": "2013",
+        "label": "WaterTower Music",
+        "lyrics_snippet": null
+      },
+      "from": 83,
+      "to": 103,
+      "hits": 2,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Sparkle - Movie Ver.",
+        "artist": "RADWIMPS",
+        "url": "https://www.shazam.com/track/326520587/sparkle-movie-ver",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/56/b3/8c/56b38c05-1728-402c-016c-c1e4b0635be8/4988031167618_cover.jpg/400x400cc.jpg",
+        "genre": "Rock",
+        "album": "Your Name.",
+        "released": "2016",
+        "label": "EMI Records",
+        "lyrics_snippet": null
+      },
+      "from": 103,
+      "to": 123,
+      "hits": 2,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Merry Christmas Mr. Lawrence",
+        "artist": "Ryuichi Sakamoto",
+        "url": "https://www.shazam.com/track/10541413/merry-christmas-mr-lawrence",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7b/a2/ce/7ba2ce4d-a220-9715-7704-b11efff6a1be/881036000000_cover.jpg/400x400cc.jpg",
+        "genre": "Classical Crossover",
+        "album": "1996 (Re-Mastered)",
+        "released": "1996",
+        "label": "KAB America Inc.",
+        "lyrics_snippet": null
+      },
+      "from": 123,
+      "to": 153,
+      "hits": 3,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Cornfield Chase",
+        "artist": "Hans Zimmer",
+        "url": "https://www.shazam.com/track/162170101/cornfield-chase",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f4/5b/73/f45b735a-8d7a-9713-b217-0f8e1593c28b/794043201943.jpg/400x400cc.jpg",
+        "genre": "Soundtrack",
+        "album": "Interstellar (Original Motion Picture Soundtrack) [Expanded Edition]",
+        "released": "2014",
+        "label": "WaterTower Music",
+        "lyrics_snippet": null
+      },
+      "from": 153,
+      "to": 173,
+      "hits": 2,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "ƽ��֮·",
+        "artist": "Pu Shu",
+        "url": "https://www.shazam.com/track/310484611/%E5%B9%B3%E5%87%A1%E4%B9%8B%E8%B7%AF",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/63/f8/5f/63f85f7c-62f3-9501-2744-9cca6697ee18/cover.jpg/400x400cc.jpg",
+        "genre": "Mandopop",
+        "album": "�Ի�����",
+        "released": "2017",
+        "label": "Earth Entertainment/Never too late studio",
+        "lyrics_snippet": null
+      },
+      "from": 173,
+      "to": 193,
+      "hits": 2,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Another Day Of Sun",
+        "artist": "La La Land Cast",
+        "url": "https://www.shazam.com/track/335341987/another-day-of-sun",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/40/b3/22/40b32268-d33f-bacb-0682-dfde864d676b/23UMGIM51810.rgb.jpg/400x400cc.jpg",
+        "genre": "Soundtrack",
+        "album": "Summer Jazz Beats",
+        "released": "2016",
+        "label": "UME - Global Clearing House",
+        "lyrics_snippet": null
+      },
+      "from": 193,
+      "to": 223,
+      "hits": 3,
+      "appearances": 1
+    },
+    {
+      "match": {
+        "title": "Trouble I'm In",
+        "artist": "Twinbed",
+        "url": "https://www.shazam.com/track/122139129/trouble-im-in",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music2/v4/e8/99/4e/e8994e4f-5a23-6ab0-5839-584f8508c23c/859712585271_cover.tif/400x400cc.jpg",
+        "genre": "Pop",
+        "album": null,
+        "released": null,
+        "label": null,
+        "lyrics_snippet": null
+      },
+      "from": 223,
+      "to": 235,
+      "hits": 1,
+      "appearances": 1
+    }
+  ],
+  "stems": {},
+  "bgm": {
+    "ok": true,
+    "match": {
+      "title": "Running Up That Hill",
+      "artist": "MEG MYERS",
+      "url": "https://www.shazam.com/track/458939173/running-up-that-hill",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/09/73/0e/09730efd-e261-7352-69f2-248ee37b35d3/814908027461.jpg/400x400cc.jpg",
+      "genre": "Alternative",
+      "album": "Running Up That Hill - Single",
+      "released": "2019",
+      "label": "300 Entertainment",
+      "lyrics_snippet": null
+    }
+  },
+  "vocal": null,
+  "model": null
+}

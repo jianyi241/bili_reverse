@@ -1,0 +1,96 @@
+/* coze-style tokens —— 来自 coze-dev/coze-studio frontend/config/tailwind-config/src/{light,dark}.js
+ * 用法：在项目 style.css 里 @import 本文件；切换主题 = 给 <html> 加/去 class="dark"
+ * 颜色是 rgb 三元组，配合 rgb(var(--x) / <alpha-value>) 使用
+ */
+:root {
+  color-scheme: light;
+
+  /* 品牌（Coze 紫） */
+  --coze-brand-0: 181 191 255;
+  --coze-brand-1: 171 181 255;
+  --coze-brand-2: 161 170 255;
+  --coze-brand-3: 150 159 255;
+  --coze-brand-5: 81 71 255;   /* #5147FF primary */
+  --coze-brand-6: 69 56 255;   /* #4538FF hover */
+  --coze-brand-7: 65 43 255;   /* #412BFF active */
+
+  /* 背景层级 */
+  --coze-bg-0: 240 240 247;
+  --coze-bg-1: 247 247 252;    /* page */
+  --coze-bg-2: 252 252 255;
+  --coze-bg-3: 255 255 255;    /* card */
+  --coze-bg-hover: 90 108 167;
+
+  /* 文本层级 */
+  --coze-fg-1: 55 67 106;      /* 辅助 */
+  --coze-fg-2: 32 41 69;       /* 次级 */
+  --coze-fg-3: 15 21 40;
+  --coze-fg-4: 8 13 30;        /* 主文本 */
+  --coze-fg-revert: 255 255 255;
+
+  /* 描边 */
+  --coze-stroke-opaque: 226 228 239;
+
+  /* 语义色 */
+  --coze-red-5: 229 50 65;
+  --coze-green-5: 0 178 60;
+  --coze-yellow-5: 255 115 0;
+  --coze-cyan-5: 0 124 135;
+
+  /* 阴影基色 */
+  --coze-shadow-0: 0 0 0;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --coze-brand-0: 76 76 255;
+  --coze-brand-1: 76 76 255;
+  --coze-brand-2: 89 89 255;
+  --coze-brand-3: 94 94 255;
+  --coze-brand-5: 166 166 255;
+  --coze-brand-6: 184 184 255;
+  --coze-brand-7: 194 194 255;
+
+  --coze-bg-0: 20 24 37;
+  --coze-bg-1: 24 28 43;       /* page #181C2B */
+  --coze-bg-2: 28 32 48;
+  --coze-bg-3: 39 43 58;       /* card #272B3A */
+  --coze-bg-hover: 241 243 255;
+
+  --coze-fg-1: 255 255 255;    /* 配合 .22 alpha */
+  --coze-fg-2: 255 255 255;    /* 配合 .39–.79 alpha */
+  --coze-fg-3: 255 255 255;
+  --coze-fg-4: 255 255 255;
+  --coze-fg-revert: 0 0 0;
+
+  --coze-stroke-opaque: 41 45 60;
+
+  --coze-red-5: 255 38 56;
+  --coze-green-5: 0 191 64;
+  --coze-yellow-5: 255 122 13;
+  --coze-cyan-5: 57 215 229;
+
+  --coze-shadow-0: 0 0 0;
+}
+
+/* 数值型 token（不随主题变） */
+:root {
+  --coze-r-tiny: 2px;
+  --coze-r-mini: 4px;
+  --coze-r-small: 6px;
+  --coze-r-normal: 8px;
+  --coze-r-m: 10px;
+  --coze-r-md: 12px;
+  --coze-r-xl: 16px;
+  --coze-r-xxl: 24px;
+  --coze-r-ultra: 40px;
+
+  --coze-shadow-sm: 0 2px 6px rgb(var(--coze-shadow-0) / 0.04), 0 4px 12px rgb(var(--coze-shadow-0) / 0.02);
+  --coze-shadow-normal: 0 4px 12px rgb(var(--coze-shadow-0) / 0.08), 0 8px 24px rgb(var(--coze-shadow-0) / 0.04);
+  --coze-shadow-lg: 0 8px 24px rgb(var(--coze-shadow-0) / 0.16), 0 16px 48px rgb(var(--coze-shadow-0) / 0.08);
+
+  --coze-font: Inter, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --coze-topbar: 56px;
+  --coze-content: 1080px;
+}

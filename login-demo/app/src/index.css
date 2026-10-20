@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --a-bg-0: #08080b;
+  --a-bg-1: #0e0e13;
+  --a-bg-2: #14141b;
+  --a-bg-3: #1b1b24;
+  --a-line: 255 255 255 / 0.07;
+  --a-line-2: 255 255 255 / 0.12;
+  --a-fg-1: #f4f5f8;
+  --a-fg-2: #a8acbb;
+  --a-fg-3: #6e7285;
+  --a-brand-rgb: 124 92 255;
+  --a-brand-2-rgb: 34 211 238;
+  --a-ok-rgb: 34 197 94;
+  --a-danger-rgb: 255 77 79;
+  --a-brand: rgb(var(--a-brand-rgb));
+  --a-brand-2: rgb(var(--a-brand-2-rgb));
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: var(--a-bg-0);
+    color: var(--a-fg-1);
+    font-family: Inter, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: rgb(124 92 255 / 0.35);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.12);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(255 255 255 / 0.2);
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex h-9 items-center justify-center gap-1.5 rounded bg-gradient-to-r from-brand to-indigo-600 px-4 text-[13px] font-medium text-white transition hover:brightness-110 active:brightness-95 disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex h-9 items-center justify-center gap-1.5 rounded border border-line bg-bg-3 px-3 text-[13px] text-fg-2 transition hover:bg-bg-2 hover:text-fg-1 disabled:opacity-40;
+  }
+  .icon-btn {
+    @apply grid h-9 w-9 place-items-center rounded-full text-fg-2 transition hover:bg-bg-3 hover:text-fg-1;
+  }
+  .chip {
+    @apply inline-flex h-8 shrink-0 items-center rounded-full border border-line bg-bg-2 px-3 text-[13px] text-fg-2 transition hover:border-line-2 hover:text-fg-1;
+  }
+  .chip-on {
+    @apply border-transparent bg-brand text-white hover:text-white;
+  }
+  .card {
+    @apply overflow-hidden rounded-lg border border-line bg-bg-2;
+  }
+  .field {
+    @apply h-9 w-full rounded-full border border-line bg-bg-3 px-4 text-[13px] text-fg-1 outline-none transition placeholder:text-fg-3 focus:border-brand/60 focus:ring-2 focus:ring-brand/20;
+  }
+  .meta {
+    @apply inline-flex items-center gap-1 text-[12px] text-fg-3;
+  }
+}
+
+@layer utilities {
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

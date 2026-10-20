@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bilibili 扫码登录 · 逆向验证台</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --line:#262b35; --fg:#e6e9ef; --dim:#8b94a6;
+    --fb:#00a1d6; --ok:#2ecc71; --warn:#f5a623; --err:#ff5c5c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#1b2230,#0f1115 60%);
+    color:var(--fg);font:14px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+    min-height:100vh;padding:32px 16px;overflow-x:hidden}
+  .wrap{width:100%;max-width:920px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{color:var(--dim);font-size:13px;margin-bottom:20px}
+  .grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .qrbox{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .qr{width:min(260px,100%);aspect-ratio:1/1;border-radius:10px;background:#fff;display:flex;
+      align-items:center;justify-content:center;overflow:hidden;position:relative}
+  .qr img{width:100%;height:100%;display:none}
+  .qr .ph{color:#99a;font-size:12px;text-align:center;padding:0 20px}
+  .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;
+    font-size:12px;border:1px solid var(--line);color:var(--dim)}
+  .badge[data-s="wait"]{color:var(--warn);border-color:#4a3a15;background:#2a2110}
+  .badge[data-s="scan"]{color:var(--fb);border-color:#123a4a;background:#0d2027}
+  .badge[data-s="ok"]{color:var(--ok);border-color:#153a24;background:#0e2418}
+  .badge[data-s="bad"]{color:var(--err);border-color:#4a1d1d;background:#2a1111}
+  button{cursor:pointer;border-radius:10px;border:1px solid transparent;padding:10px 16px;
+    font-size:14px;background:var(--fb);color:#001018;font-weight:600;transition:.15s}
+  button:hover{filter:brightness(1.08)}
+  button.ghost{background:transparent;color:var(--fg);border-color:var(--line);font-weight:400}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .hint{color:var(--dim);font-size:12px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px;table-layout:fixed}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-weight:500}
+  td.mono{font-family:ui-monospace,Consolas,monospace;color:#b9c3d3;word-break:break-all}
+  .user{display:flex;gap:14px;align-items:center}
+  .user img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line);background:#000}
+  .log{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#9fb0c6;
+    background:#0c0e13;border:1px solid var(--line);border-radius:10px;padding:10px;height:150px;
+    overflow:auto;white-space:pre-wrap}
+  .sep{height:1px;background:var(--line);margin:16px 0}
+  .tip{background:#0d2027;border:1px solid #123a4a;border-radius:10px;padding:10px 12px;
+    font-size:12.5px;color:#9fd7ea}
+  /* 接口验证列表 */
+  .feed{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto}
+  .item{display:flex;gap:10px;align-items:flex-start;padding:8px;border:1px solid var(--line);
+    border-radius:10px;background:#12151b}
+  .item img{width:112px;height:63px;object-fit:cover;border-radius:6px;background:#000;flex:none}
+  .item .t{font-size:13px;line-height:1.4;margin-bottom:2px}
+  .item .m{font-size:11.5px;color:var(--dim)}
+  .item a{color:var(--fb);text-decoration:none}
+  .chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;
+    background:#0c0e13;color:var(--dim);cursor:pointer}
+  .chip:hover{color:var(--fg)}
+  .chip[data-on="1"]{color:#001018;background:var(--fb);border-color:transparent;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>bilibili 扫码登录 · 逆向验证台</h1>
+  <div class="sub">
+    复现「方式一：扫码登录」全链路 ——
+    <code>qrcode/generate</code> → <code>qrcode/poll</code> → 从 <code>data.url</code> 取 Cookie → <code>nav</code> 复验。
+  </div>
+
+  <div class="grid">
+    <!-- 左：二维码 -->
+    <div class="card qrbox">
+      <div class="qr">
+        <div class="ph" id="ph">点击下方按钮<br>生成登录二维码</div>
+        <img id="qrimg" alt="登录二维码">
+      </div>
+      <div class="badge" id="badge" data-s="idle">待开始</div>
+      <div class="row" style="justify-content:center">
+        <button id="btnQr">① 生成二维码</button>
+        <button id="btnReset" class="ghost">重置</button>
+      </div>
+      <div class="hint" id="ttl"></div>
+    </div>
+
+    <!-- 右：结果 -->
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <strong>登录结果</strong>
+        <button id="btnMe" class="ghost" disabled>② 复验登录态 /api/me</button>
+      </div>
+
+      <div id="userBox" style="display:none;margin-top:14px">
+        <div class="user">
+          <img id="uFace" alt="" referrerpolicy="no-referrer">
+          <div>
+            <div style="font-size:16px;font-weight:600" id="uName"></div>
+            <div class="hint" id="uMeta"></div>
+          </div>
+        </div>
+        <div class="sep"></div>
+        <div style="font-size:12.5px;color:var(--dim);margin-bottom:4px">服务端收到的会话 Cookie（已脱敏）</div>
+        <table id="ckTable"><thead><tr><th style="width:130px">name</th><th>value</th></tr></thead><tbody></tbody></table>
+        <div class="hint" id="extraNote" style="margin-top:8px"></div>
+      </div>
+
+      <div id="idleBox" class="hint" style="margin-top:14px">
+        扫码成功后，这里会显示：昵称 / mid / 等级 / 大会员状态，以及服务端实际收到的 Cookie 名单，
+        并可用 <code>/api/me</code> 二次复验「这份 Cookie 是否真的能当登录态用」。
+      </div>
+
+      <div class="sep"></div>
+      <div class="tip">
+        Cookie 只存在 <code>server.js</code> 的进程内存里，不写磁盘、不发第三方；关掉服务即消失。
+        页面拿到的只是脱敏后的值（前 4 + 后 4 位 + 长度）。
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <strong>③ 主要接口验证</strong>
+      <span class="hint">收藏夹需登录 · 热门/排行榜免登录 · 搜索走 WBI 签名</span>
+    </div>
+    <div class="row" style="margin-bottom:10px">
+      <button id="btnFav" class="ghost">收藏夹</button>
+      <button id="btnPopular" class="ghost">热门</button>
+      <button id="btnRanking" class="ghost">排行榜</button>
+      <input id="kw" placeholder="搜索关键词，例如 黑神话悟空"
+        style="flex:1;min-width:180px;background:#0c0e13;border:1px solid var(--line);color:var(--fg);
+        border-radius:10px;padding:10px 12px;font-size:13px">
+      <button id="btnSearch">搜索</button>
+    </div>
+    <div id="favBar" class="row" style="display:none;margin-bottom:10px"></div>
+    <div id="feed" class="feed"></div>
+    <div id="feedNote" class="hint"></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="row" style="justify-content:space-between;margin-bottom:8px">
+      <strong>请求日志</strong>
+      <span class="hint">data.code：0 成功 / 86101 未扫码 / 86090 已扫码待确认 / 86038 已失效</span>
+    </div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const logEl = $('log');
+let timer = null, poller = null, qrKey = null, deadline = 0, polling = false;
+
+function log(msg, kind) {
+  const t = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+  const color = kind === 'err' ? '#ff8a8a' : kind === 'ok' ? '#7ee2a8' : '#9fb0c6';
+  logEl.innerHTML += `<div style="color:${color}">[${t}] ${msg}</div>`;
+  logEl.scrollTop = logEl.scrollHeight;
+}
+function setBadge(text, s) { const b = $('badge'); b.textContent = text; b.dataset.s = s || 'idle'; }
+
+function stopAll() {
+  if (timer) { clearInterval(timer); timer = null; }
+  if (poller) { clearInterval(poller); poller = null; }
+  $('ttl').textContent = '';
+}
+
+async function api(url, opt) {
+  const r = await fetch(url, opt);
+  return r.json();
+}
+
+/* ---------- ① 生成二维码 ---------- */
+$('btnQr').onclick = async () => {
+  stopAll();
+  $('btnQr').disabled = true;
+  setBadge('请求中…', 'wait');
+  log('POST /api/qr → passport.bilibili.com/x/passport-login/web/qrcode/generate');
+  const j = await api('/api/qr', { method: 'POST' });
+  $('btnQr').disabled = false;
+
+  if (!j.ok) {
+    setBadge('生成失败', 'bad');
+    log('generate 失败: ' + JSON.stringify(j.resp), 'err');
+    return;
+  }
+  qrKey = j.qrcodeKey;
+  $('ph').style.display = 'none';
+  const img = $('qrimg');
+  img.src = j.png; img.style.display = 'block';
+
+  deadline = Date.now() + (j.ttlSeconds || 180) * 1000;
+  setBadge('未扫码', 'wait');
+  log('qrcode_key = ' + qrKey);
+  log('有效期 180s，每 2s 轮询 poll');
+
+  timer = setInterval(() => {
+    const left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+    $('ttl').textContent = `剩余 ${left}s`;
+    if (left === 0) { stopAll(); setBadge('二维码已失效', 'bad'); log('本地倒计时结束，请重新生成', 'err'); }
+  }, 500);
+
+  poller = setInterval(poll, 2000);
+  poll();
+};
+
+/* ---------- ② 轮询 ---------- */
+async function poll() {
+  if (polling || !qrKey) return;
+  polling = true;
+  try {
+    const j = await api('/api/poll', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ qrcodeKey: qrKey }),
+    });
+    if (j.done) {
+      stopAll();
+      if (j.user) {
+        setBadge('登录成功', 'ok');
+        log('poll data.code = 0 → 登录成功', 'ok');
+        renderUser(j.user, j);
+      } else {
+        setBadge('扫码成功 / nav 复验失败', 'bad');
+        log('poll data.code = 0，但 nav = ' + JSON.stringify(j.nav), 'err');
+        log('已收到的 Cookie: ' + (j.cookieList || []).map((c) => c.name).join(', '));
+        log('诊断详情见 http://127.0.0.1:' + location.port + '/api/debug', 'err');
+      }
+      $('btnMe').disabled = false;
+      return;
+    }
+    if (j.pollCode === 86090) setBadge('已扫码，等待手机确认', 'scan');
+    else if (j.pollCode === 86101) setBadge('未扫码', 'wait');
+    else if (j.pollCode === 86038) {
+      stopAll(); setBadge('二维码已失效', 'bad');
+      log('poll data.code = 86038 → 已失效，请重新生成', 'err');
+    } else {
+      setBadge(j.message || '异常', 'bad');
+      log('poll 返回: ' + JSON.stringify(j), 'err');
+    }
+  } finally { polling = false; }
+}
+
+function renderUser(u, j) {
+  $('idleBox').style.display = 'none';
+  $('userBox').style.display = 'block';
+  $('uFace').src = '/api/img?u=' + encodeURIComponent(u.face);
+  $('uName').textContent = u.uname;
+  $('uMeta').textContent = `mid=${u.mid} · Lv${u.level} · ${u.vip} · 硬币 ${u.coins}`;
+  log(`nav 复验通过：${u.uname} (mid=${u.mid})`, 'ok');
+
+  const tb = $('ckTable').querySelector('tbody');
+  tb.innerHTML = (j.cookieList || [])
+    .map((c) => `<tr><td class="mono">${c.name}</td><td class="mono">${c.value}</td></tr>`).join('');
+
+  const notes = [];
+  if (j.extra) {
+    notes.push(j.extra.buvid ? 'buvid3/buvid4 已补齐' : 'buvid 未补齐');
+    notes.push(j.extra.ticket ? 'bili_ticket 已获取' : 'bili_ticket 未获取');
+  }
+  if (j.hasRefreshToken) notes.push('refresh_token 已拿到（可续期）');
+  $('extraNote').textContent = notes.join(' · ');
+}
+
+/* ---------- ③ 复验 ---------- */
+$('btnMe').onclick = async () => {
+  log('GET /api/me → api.bilibili.com/x/web-interface/nav（服务端带 Cookie）');
+  const j = await api('/api/me');
+  if (j.ok) { renderUser(j.user, { cookieList: [], extra: null, hasRefreshToken: false }); log('复验通过：Cookie 仍有效', 'ok'); }
+  else { log('复验失败: ' + (j.message || JSON.stringify(j)), 'err'); setBadge('登录态失效', 'bad'); }
+};
+
+/* ---------- ④ 主要接口：收藏夹 / 热门 / 排行榜 / 搜索 ---------- */
+const feedEl = $('feed'), feedNote = $('feedNote'), favBar = $('favBar');
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function itemHtml(v) {
+  const cover = v.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="/api/img?u=${encodeURIComponent(v.cover)}" alt="">` : '';
+  const link = v.bvid
+    ? ` <a href="https://www.bilibili.com/video/${esc(v.bvid)}" target="_blank" rel="noreferrer">${esc(v.bvid)}</a>`
+    : '';
+  return `<div class="item">${cover}<div>
+    <div class="t">${esc(v.title)}</div>
+    <div class="m">${esc(v.up || '')} · ▶${esc(v.play ?? '-')} · ${esc(v.meta || '')}${link}</div>
+  </div></div>`;
+}
+
+function renderList(items, note) {
+  feedEl.innerHTML = (items && items.length)
+    ? items.map(itemHtml).join('')
+    : '<div class="hint" style="padding:8px">没有内容</div>';
+  feedNote.textContent = note || '';
+}
+
+/* 收藏夹 */
+async function loadFav() {
+  feedNote.textContent = '加载收藏夹…';
+  feedEl.innerHTML = '';
+  log('GET /api/fav → /x/v3/fav/folder/created/list-all');
+  const j = await api('/api/fav');
+  if (!j.ok) {
+    renderList([], j.needLogin ? '需要登录（先扫码）' : (j.message || '收藏夹获取失败'));
+    log('收藏夹失败: code=' + j.code + ' ' + (j.message || ''), 'err');
+    return;
+  }
+  favBar.style.display = 'flex';
+  favBar.innerHTML = '';
+  j.folders.forEach((f, i) => {
+    const b = document.createElement('span');
+    b.className = 'chip';
+    b.dataset.on = '0';
+    b.textContent = `${f.title} (${f.count})`;
+    b.onclick = () => {
+      [...favBar.children].forEach((c) => { c.dataset.on = '0'; });
+      b.dataset.on = '1';
+      loadFavItems(f.id, f.title, f.count);
+    };
+    favBar.appendChild(b);
+  });
+  if (j.folders.length) {
+    favBar.children[0].dataset.on = '1';
+    loadFavItems(j.folders[0].id, j.folders[0].title, j.folders[0].count);
+  } else {
+    renderList([], '这个账号没有可见的收藏夹');
+  }
+}
+
+async function loadFavItems(mediaId, title, count) {
+  feedNote.textContent = `加载「${title}」…`;
+  const j = await api(`/api/fav/items?media_id=${mediaId}&pn=1`);
+  renderList(j.items || [], j.ok
+    ? `「${title}」共 ${count ?? (j.items || []).length} 个收藏，本页 ${(j.items || []).length} 条${j.hasMore ? '（有更多）' : ''}`
+    : `失败: code=${j.code} ${j.message || ''}`);
+  log(`收藏夹「${title}」: code=${j.code} 本页 ${(j.items || []).length} 条`, j.ok ? 'ok' : 'err');
+}
+
+/* 热门 */
+async function loadPopular() {
+  feedNote.textContent = '加载热门…';
+  favBar.style.display = 'none';
+  log('GET /api/popular → /x/web-interface/popular');
+  const j = await api('/api/popular?pn=1');
+  renderList(j.items || [], j.ok ? `热门 ${(j.items || []).length} 条` : `失败 code=${j.code}`);
+  log('热门: code=' + j.code, j.ok ? 'ok' : 'err');
+}
+
+/* 排行榜 */
+async function loadRanking() {
+  feedNote.textContent = '加载排行榜…';
+  favBar.style.display = 'none';
+  log('GET /api/ranking → /x/web-interface/ranking/v2');
+  const j = await api('/api/ranking?rid=0');
+  renderList(j.items || [], j.ok ? `排行榜 ${(j.items || []).length} 条` : `失败 code=${j.code}`);
+  log('排行榜: code=' + j.code, j.ok ? 'ok' : 'err');
+}
+
+/* 搜索（WBI 签名） */
+async function doSearch() {
+  const kw = ($('kw').value || '').trim();
+  if (!kw) { feedNote.textContent = '先输入关键词'; return; }
+  feedNote.textContent = `搜索「${kw}」…`;
+  favBar.style.display = 'none';
+  log('GET /api/search?keyword=' + kw + ' → wbi/search/type（需 w_rid 签名）');
+  const j = await api('/api/search?keyword=' + encodeURIComponent(kw));
+  renderList(j.items || [], j.ok
+    ? `「${kw}」命中约 ${j.numResults ?? '?'} 个视频，本页 ${(j.items || []).length} 条`
+    : `失败 code=${j.code} ${j.message || ''}`);
+  log('搜索: code=' + j.code + ' n=' + (j.items || []).length, j.ok ? 'ok' : 'err');
+}
+
+$('btnFav').onclick = loadFav;
+$('btnPopular').onclick = loadPopular;
+$('btnRanking').onclick = loadRanking;
+$('btnSearch').onclick = doSearch;
+$('kw').addEventListener('keydown', (e) => { if (e.key === 'Enter') doSearch(); });
+
+/* 进页面时若已登录，把头像和按钮状态补齐 */
+(async () => {
+  try {
+    const p = await api('/api/ping');
+    if (p.loggedIn) {
+      const me = await api('/api/me');
+      if (me.ok) {
+        renderUser(me.user, { cookieList: [], extra: null, hasRefreshToken: false });
+        $('btnMe').disabled = false;
+        log('检测到已登录会话（session.json），可直接试收藏夹', 'ok');
+      }
+    }
+  } catch { /* ignore */ }
+})();
+
+$('btnReset').onclick = async () => {
+  stopAll(); qrKey = null;
+  await api('/api/reset', { method: 'POST' });
+  $('qrimg').style.display = 'none';
+  $('ph').style.display = 'block';
+  $('userBox').style.display = 'none';
+  $('idleBox').style.display = 'block';
+  $('btnMe').disabled = true;
+  setBadge('待开始', 'idle');
+  log('已重置：服务端内存中的 Cookie 已清空');
+};
+</script>
+</body>
+</html>

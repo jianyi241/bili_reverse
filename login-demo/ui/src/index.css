@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+@font-face { font-family: "Noto Sans SC:Regular"; src: url("https://static.figma.com/font/NotoSansSC-VF_2") format("woff2"); font-style: normal; font-weight: 400; }
+@font-face { font-family: "Noto Sans SC:Medium"; src: url("https://static.figma.com/font/NotoSansSC-VF_2") format("woff2"); font-style: normal; font-weight: 500; }
+@font-face { font-family: "Noto Sans SC:Bold"; src: url("https://static.figma.com/font/NotoSansSC-VF_2") format("woff2"); font-style: normal; font-weight: 700; }
+@font-face { font-family: "JetBrains Mono:Regular"; src: url("https://static.figma.com/font/JetBrainsMono_wght__1") format("woff2"); font-style: normal; font-weight: 400; }
+@font-face { font-family: "JetBrains Mono:Medium"; src: url("https://static.figma.com/font/JetBrainsMono_wght__1") format("woff2"); font-style: normal; font-weight: 500; }
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f6f1ea; --surface: #fdfaf5; --sunken: #efe8de; --line: #e5dccf;
+  --ink: #3b332c; --muted: #8a7f73; --accent: #c08a6e; --accent-soft: #f1e1d6;
+  --sage: #8fa391; --sage-soft: #e3ebe2; --blue: #8b9bb0; --blue-soft: #e2e7ee;
+  --shadow: 0 1px 2px rgba(80,60,40,.04), 0 8px 24px -12px rgba(80,60,40,.12);
+}
+.dark {
+  --bg: #1f1c19; --surface: #282420; --sunken: #322d28; --line: #3a342e;
+  --ink: #ede5da; --muted: #9b9086; --accent: #d1a084; --accent-soft: #3d3029;
+  --sage: #9db39f; --sage-soft: #2d342d; --blue: #9eaec2; --blue-soft: #2b3038;
+  --shadow: 0 1px 2px rgba(0,0,0,.2), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+@theme inline {
+  --color-bg: var(--bg); --color-surface: var(--surface); --color-sunken: var(--sunken);
+  --color-line: var(--line); --color-ink: var(--ink); --color-muted: var(--muted);
+  --color-accent: var(--accent); --color-accent-soft: var(--accent-soft);
+  --color-sage: var(--sage); --color-sage-soft: var(--sage-soft);
+  --color-blue: var(--blue); --color-blue-soft: var(--blue-soft);
+  --font-sans: "Noto Sans SC:Regular", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono:Regular", ui-monospace, monospace;
+}
+html, body { background: var(--bg); color: var(--ink); transition: background .3s, color .3s; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.fm { font-family: "Noto Sans SC:Medium", sans-serif; font-weight: 500; }
+.fb { font-family: "Noto Sans SC:Bold", sans-serif; font-weight: 700; }
+.card { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.no-sb::-webkit-scrollbar { display: none; } .no-sb { scrollbar-width: none; }
+@keyframes bar { 0%,100% { transform: scaleY(.35) } 50% { transform: scaleY(1) } }
+.eq span { animation: bar 1s ease-in-out infinite; transform-origin: bottom; }
+@keyframes spin { to { transform: rotate(360deg) } }
+.spin { animation: spin 8s linear infinite; }
